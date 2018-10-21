@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.jspriggs</groupId>
-	<artifactId>Chronicler</artifactId>
+	<artifactId>Laboratorio-NoSQL</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>Chronicler</name>
+	<name>Laboratorio-NoSQL</name>
 	<description>Data input actions for Chronicler</description>
 
     <parent>
