@@ -29,13 +29,13 @@ public class Persona {
     
     @RelatedToVia(type = "REALIZO")
     @Fetch
-    private Set<Comenta> comentarios;
+    private Set<Realiza> comentarios;
 
-    public Set<Comenta> getComentarios() {
+    public Set<Realiza> getComentarios() {
         return comentarios;
     }
 
-    public void setComentarios(Set<Comenta> comentarios) {
+    public void setComentarios(Set<Realiza> comentarios) {
         this.comentarios = comentarios;
     }
 
@@ -46,4 +46,12 @@ public class Persona {
     public void setCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
     }
+
+    public Persona() {
+    }
+
+    public Persona(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
+    
 }

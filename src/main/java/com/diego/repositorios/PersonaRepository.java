@@ -1,6 +1,7 @@
 package com.diego.repositorios;
 
-import com.chronicler.model.Persona;
+
+import com.diego.model.Persona;
 import java.util.List;
 
 import org.springframework.data.neo4j.annotation.Query;

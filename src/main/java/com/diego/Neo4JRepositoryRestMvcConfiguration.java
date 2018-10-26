@@ -1,12 +1,15 @@
 package com.diego;
 
+
+import com.diego.model.Comentario;
+import com.diego.model.Persona;
+import com.diego.model.Realiza;
+import com.diego.model.Responde;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 
-import com.chronicler.model.Persona;
-import com.chronicler.model.Comenta;
-import com.chronicler.model.Comentario;
+
 
 @Configuration
 public class Neo4JRepositoryRestMvcConfiguration extends RepositoryRestMvcConfiguration  {
@@ -14,6 +17,7 @@ public class Neo4JRepositoryRestMvcConfiguration extends RepositoryRestMvcConfig
     protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
         config.exposeIdsFor(Persona.class);
         config.exposeIdsFor(Comentario.class);
-        config.exposeIdsFor(Comenta.class);
+        config.exposeIdsFor(Realiza.class);
+        config.exposeIdsFor(Responde.class);
     }
 }
