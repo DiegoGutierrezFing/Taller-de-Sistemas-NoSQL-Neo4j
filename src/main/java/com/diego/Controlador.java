@@ -8,9 +8,12 @@ import com.diego.repositorios.ComentarioRepository;
 import com.diego.repositorios.PersonaRepository;
 import com.diego.repositorios.RealizaRepository;
 import com.diego.repositorios.RespondeRepository;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +34,7 @@ public class Controlador {
     @Autowired
     RespondeRepository respondeRepository;
 
-    @RequestMapping(value = "/crearComentario", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/crearComentario", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Realiza crearComentario(@RequestBody Map<String, String> body) {
 
         Realiza realiza;
@@ -117,5 +120,11 @@ public class Controlador {
         respondeRepository.save(responde);
 
         return responde;
+    }
+    
+    @RequestMapping(value = "/listarComentarios/{correo}/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Comentario> listarComentariosUsuario(@PathVariable String correo){
+        
+        return comentarioRepository.listarComentariosUsuario(correo);
     }
 }
