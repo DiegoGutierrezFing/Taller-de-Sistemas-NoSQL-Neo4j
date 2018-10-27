@@ -22,8 +22,7 @@ public class Persona {
     public Long getId() {
         return id;
     }
-    @GraphId
-    private Long id;
+    @GraphId private Long id;
 
     private String correoElectronico;
     

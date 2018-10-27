@@ -15,7 +15,7 @@ import org.springframework.data.neo4j.rest.SpringCypherRestGraphDatabase;
 public class LaboratorioApplication extends Neo4jConfiguration {
 
 	public LaboratorioApplication() {
-		setBasePackage("com.chronicler");
+		setBasePackage("com.diego");
 	}
 
 	@Bean(destroyMethod = "shutdown")

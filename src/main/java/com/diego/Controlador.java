@@ -8,7 +8,9 @@ import com.diego.repositorios.ComentarioRepository;
 import com.diego.repositorios.PersonaRepository;
 import com.diego.repositorios.RealizaRepository;
 import com.diego.repositorios.RespondeRepository;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,46 +24,62 @@ public class Controlador {
 
     @Autowired
     PersonaRepository personaRepository;
-    
+
     @Autowired
     ComentarioRepository comentarioRepository;
-    
+
     @Autowired
     RespondeRepository respondeRepository;
 
-    @RequestMapping(value = "/crearComentario", method = RequestMethod.POST)
-    public Realiza crearComentario(@RequestBody String correo, @RequestBody String texto) {
+    @RequestMapping(value = "/crearComentario", method = RequestMethod.POST, consumes = "application/json")
+    public Realiza crearComentario(@RequestBody Map<String, String> body) {
 
         Realiza realiza;
+        Persona persona;
 
         if (personaRepository.count() != 0) {
-            Persona persona = personaRepository.findByCorreoElectronico(correo).get(0);
-            Comentario comentario = new Comentario(texto);
-            realiza = new Realiza(persona, comentario);
-            realizaRepository.save(realiza);
+            if (!(personaRepository.findByCorreoElectronico(body.get("correo")).isEmpty())) {
+                persona = personaRepository.findByCorreoElectronico(body.get("correo")).get(0);
+            } else {
+                persona = new Persona(body.get("correo"));
+                personaRepository.save(persona);
+            }
         } else {
-            return null;
+            persona = new Persona(body.get("correo"));
+            personaRepository.save(persona);
         }
+
+        Comentario comentario = new Comentario(body.get("texto"));
+        comentarioRepository.save(comentario);
+        realiza = new Realiza(persona, comentario);
+        realizaRepository.save(realiza);
 
         return realiza;
     }
 
-    @RequestMapping(value = "/crearPersona", method = RequestMethod.POST)
-    public Persona crearPersona(@RequestBody String correo) {
-        
+    @RequestMapping(value = "/crearPersona", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Persona crearPersona(@RequestBody Map<String, String> body) {
+
         Persona persona;
-        
+
         if (personaRepository.count() != 0) {
-            persona = personaRepository.findByCorreoElectronico(correo).get(0);
-            personaRepository.save(persona);
+            if (!(personaRepository.findByCorreoElectronico(body.get("correo")).isEmpty())) {
+                persona = personaRepository.findByCorreoElectronico(body.get("correo")).get(0);
+            } else {
+                persona = new Persona(body.get("correo"));
+                personaRepository.save(persona);
+            }
+
+            //personaRepository.save(persona);
         } else {
-            persona = new Persona(correo);
+            persona = new Persona(body.get("correo"));
+            personaRepository.save(persona);
         }
         return persona;
     }
-    
-    @RequestMapping(value = "/responderComentario", method = RequestMethod.POST)
-    public Responde crearComentario(@RequestBody Long id, @RequestBody String correo, @RequestBody String texto) {
+
+    @RequestMapping(value = "/responderComentario", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Responde responderComentario(@RequestBody Map<String, String> body) {
 
         Responde responde;
         Comentario comentario;
@@ -69,22 +87,34 @@ public class Controlador {
         Realiza realiza;
         Persona persona;
 
-        if ((personaRepository.count() != 0) && (personaRepository.count() != 0)) {
-            persona = personaRepository.findByCorreoElectronico(correo).get(0);
-            comentario = comentarioRepository.findOne(id);
-            
-            if (comentario == null)
-                return null;
-            
-            respuesta = new Comentario(texto);
-            realiza = new Realiza(persona, respuesta);
-            responde = new Responde(respuesta, comentario);
-            realizaRepository.save(realiza);
-            respondeRepository.save(responde);
-        }
-        else {
+        if (personaRepository.count() != 0) {
+            if (!(personaRepository.findByCorreoElectronico(body.get("correo")).isEmpty())) {
+                persona = personaRepository.findByCorreoElectronico(body.get("correo")).get(0);
+            } else {
+                persona = new Persona(body.get("correo"));
+                personaRepository.save(persona);
+            }
+        } else {
+            //persona = new Persona(body.get("correo"));
             return null;
         }
+
+        if (comentarioRepository.count() != 0) {
+            comentario = comentarioRepository.findOne(Long.parseLong(body.get("idComentario")));
+        } else {
+            return null;
+        }
+
+        if (comentario == null) {
+            return null;
+        }
+
+        respuesta = new Comentario(body.get("texto"));
+        realiza = new Realiza(persona, respuesta);
+        responde = new Responde(respuesta, comentario);
+        comentarioRepository.save(respuesta);
+        realizaRepository.save(realiza);
+        respondeRepository.save(responde);
 
         return responde;
     }
