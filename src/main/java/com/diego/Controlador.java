@@ -129,8 +129,26 @@ public class Controlador {
     }
     
     @RequestMapping(value = "/leerComentario/{idComentario}/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Comentario> leerComentario(@PathVariable String id){
+    public String leerComentarioID(@PathVariable("idComentario") String idComentario){
         
-        return comentarioRepository.leerComentario(id);
+        List<Comentario> lista = comentarioRepository.leerComentarioID(Long.parseLong(idComentario));
+        String json = "[]";
+        
+        if (lista.isEmpty())
+            return json;
+        
+        json = "{ \"id\":\"" + lista.get(0).getId() + "\",\"texto\":\"" + lista.get(0).getTexto() + "\", \"respuestas\":[";
+        
+        if (lista.size()>1) {
+            for (int i = 1; i < lista.size(); i++){
+                json = json + "{ \"id\":\"" + lista.get(i).getId() + "\",\"texto\": \"" + lista.get(i).getTexto() + "\"}";
+                if (i < lista.size() - 1)
+                    json = json + ",";
+            }
+        }
+        
+        json = json + "]}";
+        
+        return json;
     }
 }

@@ -28,7 +28,4 @@ public class Comentario {
 
     public Comentario() {
     }
-    
-    
-
 }
