@@ -1,1 +1,8 @@
 /target/
+.project
+.factorypath
+.classpath
+*.prefs
+*.prefs
+.settings/org.eclipse.m2e.core.prefs
+target/.wro4j/buildContext.properties

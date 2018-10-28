@@ -127,4 +127,10 @@ public class Controlador {
         
         return comentarioRepository.listarComentariosUsuario(correo);
     }
+    
+    @RequestMapping(value = "/leerComentario/{idComentario}/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<Comentario> leerComentario(@PathVariable String id){
+        
+        return comentarioRepository.leerComentario(id);
+    }
 }

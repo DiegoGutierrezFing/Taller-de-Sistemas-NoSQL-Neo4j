@@ -15,6 +15,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://tsi-diego.eastus.cloudapp.azure.com:32768")
+        		//.allowedOrigins("http://localhost:32768")
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true).maxAge(3600);

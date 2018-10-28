@@ -13,6 +13,11 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "comentarios", path = "comentarios")
 public interface ComentarioRepository extends PagingAndSortingRepository<Comentario, Long> {
     //Consulta para retornar los comentarios realizados por un usuario
-    @Query("MATCH (p:Persona)-[r:REALIZO]->(c:Comentario) where p.correoElectronico = {correo} RETURN c")
+    @Query("MATCH (p:Persona)-[r:REALIZO]->(c:Comentario) "
+    		+ "where p.correoElectronico = {correo} RETURN c")
     public List<Comentario> listarComentariosUsuario(@Param("correo") String correo);
+    
+    //@Query("MATCH (p:Comentario) OPTIONAL MATCH (p)<-[:RESPONDE]-(c) RETURN {comentario : p.texto, id: ID(p), listaRespuestas : {texto: collect(c.texto)}}")
+    @Query("MATCH (p:Comentario) WHERE ID(p) = {idComentario} OPTIONAL MATCH (p)<-[:RESPONDE]-(c) RETURN p,c")
+    public List<Comentario> leerComentario(@Param("idComentario") String idComentario);
 }
